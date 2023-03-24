@@ -1,0 +1,1 @@
+export const PATHDOMAIN = 'http://localhost:3000';

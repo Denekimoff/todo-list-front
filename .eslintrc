@@ -1,0 +1,17 @@
+{
+    "extends": [
+        "react-app",
+        "react-app/jest"
+    ],
+    "rules": {
+        "no-unused-vars": "warn", // Не используемые переменные
+        "no-console":"warn", // Не оставлять console.log
+        "prefer-const": "error",
+        "quotes": ["warn", "single"], //Одинарные кавычки
+        "jsx-quotes": ["warn", "prefer-single"],
+        "indent": ["warn", 4],
+        "max-len": ["warn", {"code": 250}], //Максимальная длина строки
+        "comma-dangle": ["error", "always-multiline"],
+        "semi": ["warn", "never"]
+    }
+}

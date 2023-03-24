@@ -1,0 +1,12 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --red-color: #E9464F;
+    --purple-color: #2B2747;
+    --green-color: #6FB062;
+}
