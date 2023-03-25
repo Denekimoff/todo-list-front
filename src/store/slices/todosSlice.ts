@@ -25,6 +25,7 @@ export const fetchPostTodos = createAsyncThunk(
   "user/fetchAddTodo",
   async function (_, { dispatch }) {
     const currentTodos = localStorage.getItem("todos");
+    console.log('todos fetch todos', currentTodos);
     try {
       const response: Response = await fetch(`${PATHDOMAIN}/todos/post`, {
         method: 'POST',

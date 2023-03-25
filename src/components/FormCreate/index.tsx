@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { v4 as uuidv4 } from 'uuid';
+// import {uuid} from "uuidv4";
 import { AppDispatch } from '../../store';
 import { fetchPostTodos, requestAddTodo } from '../../store/slices/todosSlice';
 import moment from 'moment';
@@ -22,9 +22,9 @@ export const FormCreate = () => {
   const handlerOnSubmit = (event) => {
     event.preventDefault()
     const formData = {
-      id: uuidv4(),
+      id: Math.random(),
       title,
-      check: false,
+      isDone: false,
       date: moment().format('HH:mm:ss DD.MM.YYYY')
     }
     dispatch(requestAddTodo(formData))
