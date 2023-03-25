@@ -1,4 +1,4 @@
-export const httpRequest = (path: string, method: string, body: any = {}) => {
+export const httpRequest = (path: string, method: string, body?: any) => {
   return fetch(path, {
     method: method,
     headers: {

@@ -6,14 +6,17 @@ export const fetchGetTodos = createAsyncThunk(
  "user/fetchGetTodos",
  async function (_, { dispatch }) {
    try {
-     const response: Response = await httpRequest(`${PATHDOMAIN}/todos`, 'GET')
+    const response: Response = await fetch(`${PATHDOMAIN}/todos/`, {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+    })
      const data = await response.json();
-     const { list } = data;
-     localStorage.setItem("todos", list);
-     const renderTodos = JSON.parse(localStorage.getItem("todos"));
-     dispatch(addTodo(renderTodos));
-   } catch {
-     alert(`ПЕРВАЯ ЗАГРУЗКА, Что-то пошло не так`);
+     localStorage.setItem("todos", JSON.stringify(data));
+     dispatch(addTodo(data));
+   } catch (error) {
+     console.log(error.message)
    }
  }
 );
@@ -23,14 +26,16 @@ export const fetchPostTodos = createAsyncThunk(
   async function (_, { dispatch }) {
     const currentTodos = localStorage.getItem("todos");
     try {
-      const response: Response = await httpRequest(`${PATHDOMAIN}/todos/post`, 'POST', currentTodos)
+      const response: Response = await fetch(`${PATHDOMAIN}/todos/post`, {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: currentTodos,
+      });
       const data = await response.json();
-      const { list } = data;
-      localStorage.setItem("todos", list);
-      const renderTodos = JSON.parse(localStorage.getItem("todos"));
-      dispatch(addTodo(renderTodos));
-    } catch {
-      alert(`Что-то пошло не так`);
+    } catch (error){
+      alert(error.message);
       }
   }
 );
@@ -38,11 +43,13 @@ export const fetchPostTodos = createAsyncThunk(
 export const requestAddTodo = createAsyncThunk(
  "user/requestAddTodo",
  async function (action: any, { dispatch }) {
-  console.log(action)
-       const todos =  await JSON.parse(localStorage.getItem("todos"));
-       const updateTodos = todos.push(action)
-       localStorage.setItem("todos", updateTodos);
-       dispatch(addTodo(updateTodos));
+      const todos =  await JSON.parse(localStorage.getItem("todos"));
+      console.log(todos, 'стырый массив')
+      todos.push(action)
+      console.log(todos, 'новый массив')
+      localStorage.setItem("todos", JSON.stringify(todos));
+      console.log(localStorage.getItem('todos'))
+      dispatch(addTodo(todos));
  }
 );
 
@@ -64,7 +71,9 @@ export const requestDeleteTodo = createAsyncThunk(
  async function (action: any, { dispatch }) {
        const { id } = action
        const todos =  await JSON.parse(localStorage.getItem("todos"));
-       const updateTodos =  todos.filter(todo => todo.id !== id)
+       const updateTodos =  todos.filter(todo => todo._id !== id)
+       console.log(todos, 'ДО УДАЛЕНИЯ')
+       console.log(updateTodos, 'ПОСЛЕ УДАЛЕНИЯ')
        localStorage.setItem("todos", JSON.stringify(updateTodos));
        dispatch(addTodo(updateTodos));
  }
