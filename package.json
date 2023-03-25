@@ -21,6 +21,7 @@
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.8.2",
     "sass": "^1.58.3",
+    "use-navigator-online": "^3.2.4",
     "uuidv4": "^6.2.13"
   },
   "devDependencies": {

@@ -1,23 +1,21 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-// import {uuid} from "uuidv4";
-import { AppDispatch } from '../../store';
-import { fetchPostTodos, requestAddTodo } from '../../store/slices/todosSlice';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store';
+import { addLazyTodo, addTodo, fetchPostTodos } from '../../store/slices/todosSlice';
 import moment from 'moment';
+import useNavigatorOnline from 'use-navigator-online';
 import './index.scss';
 
 export const FormCreate = () => {
   const dispatch = useDispatch<AppDispatch>()
+  const { isOnline, isOffline, backOnline, backOffline } = useNavigatorOnline()
+  const { lazyTodos } = useSelector((state: RootState) => state.todos)
+  // const { todos } = useSelector((state: RootState) => state.todos)
 
   const [title, setTitle] = useState('')
   const handlerOnChangeTitle = (event) => {
     setTitle(event.target.value)
   }
-
-  // const [isChecked, setIsChecked] = useState(false)
-  // const handlerOnChangeChecked = () => {
-  //   setIsChecked(prev => !prev)
-  // }
 
   const handlerOnSubmit = (event) => {
     event.preventDefault()
@@ -27,17 +25,21 @@ export const FormCreate = () => {
       isDone: false,
       date: moment().format('HH:mm:ss DD.MM.YYYY')
     }
-    dispatch(requestAddTodo(formData))
-    dispatch(fetchPostTodos())
-    console.log(event.form)
+    setTitle('')
+    dispatch(addTodo(formData))
+    if (isOnline) dispatch(fetchPostTodos(formData))
+    if (isOffline) dispatch(addLazyTodo(formData))
   }
+
+  useEffect(() => {
+    if(lazyTodos.length) dispatch(fetchPostTodos(lazyTodos))
+  }, [backOnline])
 
   return (
     <form className='form-create' onSubmit={handlerOnSubmit}>
       <label htmlFor="title">Напишите задачу:
       <input className='field-title' name='title' type="text" value={title} onChange={handlerOnChangeTitle}/>
       </label>
-      {/* <input className='field-check' type="checkbox" checked={isChecked} onChange={handlerOnChangeChecked} /> */}
       <button className='button-sbmt' type="submit">Создать</button>
     </form>
   )

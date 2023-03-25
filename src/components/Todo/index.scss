@@ -8,13 +8,36 @@
   border-radius: .4rem;
   border: 1px solid #bebebe;
 
+  &--checked {
+  border: 1px solid rgb(4, 223, 77);
+  }
+
   h3 {
     color: #414141;
   }
+  .todo__item--checked {
+    text-decoration: line-through;
+  }
 
-  &-setting {
+  &__setting {
     display: flex;
     align-items: center;
+
+    .todo__button-edit {
+      margin-right: 1rem;
+      padding: .3rem .6rem;
+      background-color: rgb(163, 223, 231);
+      color: #414141;
+      border: 1px solid #0000001f;
+      border-radius: .3rem;
+      cursor: pointer;
+
+      &:disabled {
+        background-color: rgb(215, 216, 216);
+        user-select: none;
+        cursor: default;
+      }
+    }
 
     input {
       margin-right: 1rem;
@@ -22,7 +45,8 @@
       height: 1.5rem;
       cursor: pointer;
     }
-    button {
+
+    .todo__button-delete {
       margin: 0 .5rem;
       padding: .3rem .6rem;
       background-color: tomato;

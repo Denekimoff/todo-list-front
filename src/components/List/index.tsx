@@ -1,18 +1,18 @@
-import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { AppDispatch, RootState } from '../../store'
+import { RootState } from '../../store'
 import { Todo } from '../Todo'
 import './index.scss';
 
 export const List = () => {
-
   const { todos } = useSelector((state: RootState) => state.todos)
-  console.log(todos, 'LIST todos')
-  
+
   return (
     <div className='list'>
       <h2>Список ваших задач:</h2>
-      {todos ? todos.map(todo => <Todo key={todo.id} id={todo._id} title={todo.title} check={todo.check} date={todo.date} />) : <h4>У вас нет актуальных задач.</h4>}
+      {todos ? (
+        todos.map(todo => (<Todo key={todo.id} {...todo}/>))) : (
+        <h4>У вас нет актуальных задач.</h4>)
+      }
     </div>
   )
 }
