@@ -23,7 +23,7 @@ export const fetchGetTodos = createAsyncThunk(
 
 export const fetchPostTodos = createAsyncThunk(
   "todos/fetchPostTodos",
-  async function (action: any) {
+  async function (action: any, { dispatch }) {
     try {
       const response: Response = await fetch(`${PATHDOMAIN}/todos/post`, {
         method: 'POST',
@@ -32,7 +32,9 @@ export const fetchPostTodos = createAsyncThunk(
         },
         body: JSON.stringify(action),
       });
-      // const data = await response.json();
+      const data = await response.json();
+      console.log(data)
+      dispatch(getTodos(data));
     } catch (error){
       console.log(error.message);
       }

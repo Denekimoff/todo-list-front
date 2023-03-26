@@ -9,7 +9,7 @@ export const List = () => {
   return (
     <div className='list'>
       <h2>Список ваших задач:</h2>
-      {todos ? (
+      {todos.length ? (
         todos.map(todo => (<Todo key={todo.id} {...todo}/>))) : (
         <h4>У вас нет актуальных задач.</h4>)
       }
