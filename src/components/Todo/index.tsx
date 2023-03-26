@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
-import { deleteTodo, setCheckedTodo, setTitleTodo } from '../../store/slices/todosSlice';
+import { deleteTodo, fetchDeleteTodo, fetchToggleCheckTodo, setCheckedTodo, setTitleTodo } from '../../store/slices/todosSlice';
 import './index.scss';
 
 export const Todo = ({ title, isDone, date, id }) => {
@@ -22,12 +22,13 @@ export const Todo = ({ title, isDone, date, id }) => {
   }
 
   const handerOnDeleteTodo = () => {
-    dispatch(deleteTodo({id}))
+    dispatch(fetchDeleteTodo({id}))
   }
 
   const handlerIsCheck = () => {
-    dispatch(setCheckedTodo({id}))
-    setIsChecked(prev => !prev)
+    // dispatch(setCheckedTodo({id}))
+    // setIsChecked(prev => !prev)
+    dispatch(fetchToggleCheckTodo({id, isDone: !isChecked}))
   }
 
   return (

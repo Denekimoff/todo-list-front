@@ -41,6 +41,48 @@ export const fetchPostTodos = createAsyncThunk(
   }
 );
 
+export const fetchDeleteTodo = createAsyncThunk(
+  "todos/fetchDeleteTodo",
+  async function (action: any, { dispatch }) {
+    try {
+      const response: Response = await fetch(`${PATHDOMAIN}/todos/delete`, {
+        method: 'DELETE',
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify(action),
+      });
+      const { message, body } = await response.json()
+      console.log(message)
+      dispatch(getTodos(body));
+    } catch (error){
+      console.log(error.message);
+      }
+  }
+);
+
+export const fetchToggleCheckTodo = createAsyncThunk(
+  "todos/fetchToggleCheckTodo",
+  async function (action: any, { dispatch }) {
+    try {
+      console.log('Отправляется на сервер: ', action)
+      const response: Response = await fetch(`${PATHDOMAIN}/todos/checked`, {
+        method: 'PATCH',
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify(action),
+      });
+      const { message, body } = await response.json()
+      console.log('Приходит с сервера: ', body)
+      console.log(message)
+      dispatch(getTodos(body));
+    } catch (error){
+      console.log(error.message);
+      }
+  }
+);
+
 const todosSlice = createSlice({
   name: "todos",
   initialState: {
