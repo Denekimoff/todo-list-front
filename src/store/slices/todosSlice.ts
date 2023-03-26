@@ -13,7 +13,6 @@ export const fetchGetTodos = createAsyncThunk(
       },
     })
      const data = await response.json();
-     localStorage.setItem("todos", JSON.stringify(data));
      dispatch(getTodos(data));
    } catch (error) {
      console.log(error.message)
@@ -33,7 +32,6 @@ export const fetchPostTodos = createAsyncThunk(
         body: JSON.stringify(action),
       });
       const data = await response.json();
-      console.log(data)
       dispatch(getTodos(data));
     } catch (error){
       console.log(error.message);
@@ -65,7 +63,6 @@ export const fetchToggleCheckTodo = createAsyncThunk(
   "todos/fetchToggleCheckTodo",
   async function (action: any, { dispatch }) {
     try {
-      console.log('Отправляется на сервер: ', action)
       const response: Response = await fetch(`${PATHDOMAIN}/todos/checked`, {
         method: 'PATCH',
         headers: {
@@ -74,7 +71,26 @@ export const fetchToggleCheckTodo = createAsyncThunk(
         body: JSON.stringify(action),
       });
       const { message, body } = await response.json()
-      console.log('Приходит с сервера: ', body)
+      console.log(message)
+      dispatch(getTodos(body));
+    } catch (error){
+      console.log(error.message);
+      }
+  }
+);
+
+export const fetchEditTitleTodo = createAsyncThunk(
+  "todos/fetchEditTitleTodo",
+  async function (action: any, { dispatch }) {
+    try {
+      const response: Response = await fetch(`${PATHDOMAIN}/todos/updateTitle`, {
+        method: 'PATCH',
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify(action),
+      });
+      const { message, body } = await response.json()
       console.log(message)
       dispatch(getTodos(body));
     } catch (error){

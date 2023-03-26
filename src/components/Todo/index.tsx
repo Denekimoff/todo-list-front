@@ -1,14 +1,11 @@
-import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../store';
-import { deleteTodo, fetchDeleteTodo, fetchToggleCheckTodo, setCheckedTodo, setTitleTodo } from '../../store/slices/todosSlice';
+import { useState } from 'react'
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../store';
+import { fetchDeleteTodo, fetchEditTitleTodo, fetchToggleCheckTodo, setTitleTodo } from '../../store/slices/todosSlice';
 import './index.scss';
 
-export const Todo = ({ title, isDone, date, id }) => {
+export const Todo = ({ title, isDone, id }) => {
   const dispatch = useDispatch<AppDispatch>()
-  // const { todos } = useSelector((state: RootState) => state.todos)
-
-  const [isChecked, setIsChecked] = useState(isDone)
 
   const [newTitle, setNewTitle] = useState(title)
   const handlerOnChangeNewTitle = (event) => {
@@ -17,8 +14,11 @@ export const Todo = ({ title, isDone, date, id }) => {
 
   const [isEdit, setIsEdit] = useState(false)
   const handlerOnSubmitNewTitle = () => {
+    if (isEdit && title !== newTitle) {
+      dispatch(setTitleTodo({id, newTitle}))
+      dispatch(fetchEditTitleTodo({id, title: newTitle}))
+    }
     setIsEdit(prev => !prev)
-    dispatch(setTitleTodo({id, newTitle}))
   }
 
   const handerOnDeleteTodo = () => {
@@ -26,20 +26,17 @@ export const Todo = ({ title, isDone, date, id }) => {
   }
 
   const handlerIsCheck = () => {
-    // dispatch(setCheckedTodo({id}))
-    // setIsChecked(prev => !prev)
-    dispatch(fetchToggleCheckTodo({id, isDone: !isChecked}))
+    dispatch(fetchToggleCheckTodo({id, isDone: !isDone}))
   }
 
   return (
-    <div className={isChecked ? 'todo todo--checked' : 'todo'}>
+    <div className={isDone ? 'todo todo--checked' : 'todo'}>
       {isEdit ? (
-        <input type="text" value={newTitle} onChange={handlerOnChangeNewTitle}/>) : (
-        <h3 className={isChecked ? `todo__item--checked` : 'todo__item'}>{title}</h3>)
+        <input  className='todo__edit-input' type="text" value={newTitle} onChange={handlerOnChangeNewTitle}/>) : (
+        <h3 className={isDone ? `todo__item--checked` : 'todo__item'}>{title}</h3>)
       }
-      {/* <p>{date}</p> */}
       <div className="todo__setting">
-        <button className='todo__button-edit' disabled={isChecked} onClick={handlerOnSubmitNewTitle}>
+        <button className='todo__button-edit' disabled={isDone} onClick={handlerOnSubmitNewTitle}>
           {isEdit ? 'ok' : 'edit'}
         </button>
         <input type="checkbox" checked={isDone} onChange={handlerIsCheck}/>

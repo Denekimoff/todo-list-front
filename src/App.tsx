@@ -8,10 +8,8 @@ import "./App.scss";
 
 export default function App() {
   const dispatch = useDispatch<AppDispatch>()
-  
   useEffect(() => {
     dispatch(fetchGetTodos())
-    console.log('RENDER APP')
   }, [])
 
   return (
